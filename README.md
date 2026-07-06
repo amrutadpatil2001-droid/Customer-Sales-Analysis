@@ -1,63 +1,92 @@
 Problem Statement :-
 
-The company is experiencing fluctuations in sales and profit across different products, regions, and customer segments. The objective of this analysis is to 
+This project combines customer sales and churn datasets to analyze sales performance, customer purchasing behavior, and churn patterns. The objective is to help businesses identify high-value customers, monitor sales trends, and understand factors that may contribute to customer churn.
 
-identify the major factors affecting sales performance, profitability, and units sold, and provide business recommendations based on the findings
+Businesses often maintain sales and customer information in separate systems. Without integrating these datasets, it becomes difficult to answer important business questions such as:
 
+- Who are the highest revenue-generating customers?
+- Which products contribute the most to revenue?
+- Which regions perform better in terms of sales?
+- What is the customer churn rate?
+- Are low-tenure customers more likely to churn?
+- How can the business improve customer retention and sales performance?
 
-Company wants to understand the sales data to identify:
-
-Top performing and low performing products
-Monthly trends
-Impacts of discount
-Regional performance differences
-Segmentation impact
+This project addresses these questions by combining sales and churn data into a single analytical dataset.
 
 Dataset :-
 
-The sales dataset contains the columns like 
-Segments
-Country
-Product
-Discount Bands
-Units Sold
-Manufacturing Price
-Sale Price
-Gross Sales
-Discounts
-Profit Date	
+#Sales Dataset
+- Date
+- Customer ID
+- Product
+- Quantity
+- Price
+- Region
+
+#Customer Churn Dataset
+- Customer ID
+- Tenure
+- Monthly Charges
+- Total Charges
+- Churn Status
 
 Tools Used :-
 
 Python (Pandas) — Data cleaning and analysis
 Matplotlib — Data visualization
 PostgreSQL / PgAdmin — SQL querying and data extraction
-Power BI — Dashboard creation and KPI reporting
 
 Steps Performed :-
 
-1. Data cleaning of the given dataset to remove the duplicates, fill null values, etc.
-2. Export the cleaned dataset into new file.
-3. Performed EDA on the cleaned dataset to find out the relationship between the columns.
-4. Written the insights & recommendations based on that.
-5. Loaded the data in database & run the queries
-6. Based on dataset, created the dashboard for KPI, charts, etc.
-7. Created the readme file for the problem statement & analysis summary of the business problem
+#Data Preparation
+- Imported sales and customer churn datasets
+- Checked dataset information & Validated missing values
+- Converted Date column into datetime format
+- Renamed Customer_ID column for consistency
+- Merged both datasets using CustomerID
+
+#Feature Engineering
+Created additional business metrics:
+- Revenue = Quantity × Price
+- Month extracted from Date
+- Average Monthly Spend
+
+#Exploratory Data Analysis
+Performed analysis on:
+- Total Revenue
+- Revenue by Customer
+- Average Order Value
+- Total Orders
+- Monthly Revenue Trend
+- Best Selling Products
+- Revenue by Region
+- Customer Churn Rate
+
+#Data Visualization
+Created visualizations for:
+- Monthly Revenue Trend
+- Revenue by Region
+- Top Selling Products
+- Customer Churn Distribution
+
+#Pivot Table Analysis
+Generated a pivot table to compare Revenue by:
+- Region
+- Product
 
 Key Insights :- 
 
 After analyzing the given data of the sales these are the insights, 
-
-1) Product Paseo generated the highest sales among all products.
-2) The USA and Canada regions contributed the highest profit share, accounting for approximately 21% of total profit.
-3) Monthly sales analysis shows that October recorded the highest sales at ₹2.1 Crore, followed by December with 1.7 Cr in sales.
-4) Products with lower discount levels generated comparatively higher sales, indicating that heavy discounts were not necessarily driving sales growth.
-5) The Government segment contributed the highest share of overall sales among all customer segments.
+- Identified customers generating the highest revenue.
+- Determined the best-selling products based on quantity sold.
+- Compared revenue contribution across different regions.
+- Calculated overall customer churn rate.
+- Observed that customers with lower tenure are more likely to churn.
+- Measured average order value and customer purchase behavior.
 
 Recommendations :-
-
-1) Focus more on product like Paseo who generates more revenue in sales by increasing stock availability, targeted marketing campaign.
-2) Since regions like USA & Canada generates more revenue, the company can streghten its presence through regional offers, market expansions strategies.
-3) Increasing inventory & marketing activities during high sale month like October \& December to get more seasonal profit opportunities.
-4) Avoid excessive discounting on high-performing products to maintain healthy profit margins
-5) As government segment product sales is high, focus more on the availability of the products in all regions
+- Develop retention strategies for high-value customers.
+- Promote top-performing products to maximize revenue.
+- Investigate low-performing regions and implement targeted marketing campaigns.
+- Focus on onboarding and engaging new customers to reduce churn.
+- Monitor monthly revenue trends to improve inventory and sales planning.
