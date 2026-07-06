@@ -32,9 +32,9 @@ Dataset :-
 
 Tools Used :-
 
-Python (Pandas) — Data cleaning and analysis
-Matplotlib — Data visualization
-PostgreSQL / PgAdmin — SQL querying and data extraction
+- Python (Pandas) — Data cleaning and analysis
+- Matplotlib — Data visualization
+- PostgreSQL / PgAdmin — SQL querying and data extraction
 
 Steps Performed :-
 
