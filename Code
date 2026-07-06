@@ -1,0 +1,138 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+#Data loading
+churn = pd.read_csv(r"C:\Users\Amruta\OneDrive\Desktop\Python programs\Jup_Prg\customer_churn.csv")
+sales = pd.read_csv(r"C:\Users\Amruta\OneDrive\Desktop\Python programs\Jup_Prg\sales_data.csv")
+
+print(sales.head())
+print(churn.head())
+
+print(sales.info())
+print(churn.info())
+
+print(sales.isnull().sum())
+print(churn.isnull().sum())
+
+print(sales.columns)
+
+# Convert dates
+sales['Date'] = pd.to_datetime(sales['Date'])
+
+# Create revenue
+sales['Revenue'] = sales['Quantity'] * sales['Price']
+
+# Extract month
+sales['Month'] = sales['Date'].dt.to_period('M')
+
+# Churn feature engineering
+churn['AvgMonthlySpend'] = churn['TotalCharges'] / churn['Tenure']
+churn['AvgMonthlySpend'].fillna(churn['MonthlyCharges'], inplace=True)
+
+print("Sales columns:", sales.columns)
+print("Churn columns:", churn.columns)
+
+# Rename the customer id column name
+sales.rename(columns={'Customer_ID': 'CustomerID'}, inplace=True)
+# Merge sales with churn using CustomerID
+combined = sales.merge(churn, on='CustomerID', how='left')
+
+print(combined)
+
+#AGGREGATIONS
+
+# 1. Total revenue
+total_revenue = combined['Revenue'].sum()
+
+# 2. Revenue per customer
+customer_revenue = combined.groupby('CustomerID')['Revenue'].sum()
+
+# 3. Average order value
+avg_order_value = combined['Revenue'].mean()
+
+# 4. Order count per customer
+order_count = combined.groupby('CustomerID').size()
+
+# 5. Churn rate
+churn_rate = combined['Churn'].mean()
+
+# Sales & Customer Analysis
+# Monthly sales trend
+monthly_sales = combined.groupby('Month')['Revenue'].sum()
+
+# Best-selling products
+best_products = combined.groupby('Product')['Quantity'].sum().sort_values(ascending=False)
+
+# Revenue by region
+region_sales = combined.groupby('Region')['Revenue'].sum()
+
+#Pivot Tables
+
+pivot = pd.pivot_table(
+    combined,
+    values='Revenue',
+    index='Region',
+    columns='Product',
+    aggfunc='sum',
+    fill_value=0
+)
+
+print("\nPivot Table:\n", pivot)
+
+#Visualizations
+
+# Aggregations
+total_revenue = sales['Revenue'].sum()
+
+customer_revenue = sales.groupby('CustomerID')['Revenue'].sum()
+
+avg_order_value = sales.groupby(['CustomerID', 'Date'])['Revenue'].sum().mean()
+
+sales.groupby('Region')['Revenue'].sum().plot(kind='pie')
+plt.title('Sales by Region')
+plt.show()
+
+# Churn rate
+churn_rate = churn['Churn'].mean()
+
+# Visualization
+churn['Churn'].value_counts().plot(kind='bar')
+plt.title('Churn Distribution')
+plt.show()
+
+# 1. Monthly Revenue Trend
+monthly_sales.plot()
+plt.title('Monthly Revenue Trend')
+plt.xlabel('Month')
+plt.ylabel('Revenue')
+plt.show()
+
+# 2. Top Products
+best_products.head(10).plot(kind='bar')
+plt.title('Top Products')
+plt.show()
+
+# 3. Revenue by Region
+region_sales.plot(kind='pie', autopct='%1.1f%%')
+plt.title('Revenue by Region')
+plt.show()
+
+print("\nCUSTOMER SALES ANALYSIS REPORT")
+print("Total Revenue:", total_revenue)
+print("Total Customers:", combined['CustomerID'].nunique())
+total_orders = combined.groupby(['CustomerID', 'Date']).ngroups
+print("Total Orders:", total_orders)
+print("Average Order Value:", avg_order_value)
+print("Churn Rate:", churn_rate)
+
+# Top customer
+top_customer = customer_revenue.idxmax()
+print("Top Customer:", top_customer)
+
+print("\nINSIGHTS:")
+print("- High revenue customers should be retained")
+print("- Products with highest sales should be promoted")
+print("- Regions with low revenue need attention")
+print("- Customers with low tenure are more likely to churn")
+
+
